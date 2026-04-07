@@ -39,3 +39,11 @@ Sinta-se à vontade para contribuir com melhorias, correções de bugs ou novas 
 ## Licença
 
 Este projeto é de código aberto e está sob a licença MIT.
+
+## Site
+
+https://projeto-charada-ivory.vercel.app/
+
+## Versão Back
+
+https://api-charada-ten.vercel.app/
