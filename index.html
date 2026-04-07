@@ -6,32 +6,44 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>¿ Gerador de Charadas ?</title>
 </head>
-<body class="bg-purple-200 flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-gradient-to-br from-purple-800 to-indigo-900 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <h1 class="text-3xl text-bold mb-12 text-purple-600">¿ Gerador de Charadas ?</h1>
+    <h1 class="text-4xl md:text-5xl leading-[1.4] font-extrabold mb-12 text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-400 drop-shadow-lg">¿ Gerador de Charadas ?</h1>
 
     <div class="group w-full max-w-sm [perspective:1000px] h-64">
         <div id="card-inner" class="relative w-full h-full transition-all duration-500 [transform-style:preserve-3d] cursor-pointer shadow-2xl rounded-2xl">
            
-            <div class="absolute inset-0 [backface-visibility:hidden] bg-white rounded-2xl flex flex-col items-center justify-center p-6 text-center border-2 border-purple-500">
-                <span class="text-purple-500 font-bold uppercase tracking-widest text-xs mb-2">Pergunta</span>
-                <p id="pergunta" class="text-xl font-medium text-gray-800 italic">Carregando charada...</p>
-                <p class="mt-4 text-gray-400 text-xs font-light">Clique para ver a resposta</p>
+            <!-- Frente -->
+            <div class="absolute inset-0 [backface-visibility:hidden] bg-gradient-to-br from-violet-700 to-indigo-900  rounded-2xl flex flex-col items-center justify-center p-6 text-center border-2 border-purple-500 border border-purple-400/40 shadow-[0_0_20px_rgba(168,85,247,0.6),0_0_40px_rgba(168,85,247,0.4)]">
+                <span class="text-white font-bold uppercase tracking-widest text-xs mb-2">Pergunta</span>
+                <p id="pergunta" class="text-xl font-medium text-white italic">Carregando charada...</p>
+                <p class="mt-4 text-white text-xs font-light">Clique para ver a resposta</p>
             </div>
 
-            <div class="absolute inset-0 [backface-visibility:hidden] bg-purple-600 rounded-2xl flex flex-col items-center justify-center p-6 text-center text-white [transform:rotateY(180deg)]">
+            <!-- Verso -->
+            <div class="absolute inset-0 [backface-visibility:hidden]  bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl flex flex-col items-center justify-center p-6 text-center text-white [transform:rotateY(180deg)] border border-purple-400/40 shadow-[0_0_20px_rgba(168,85,247,0.6),0_0_40px_rgba(168,85,247,0.4)]">
                 <span class="text-purple-200 font-bold uppercase tracking-widest text-xs mb-2">Resposta</span>
                 <p id="resposta" class="text-2xl font-bold"></p>
             </div>
-
         </div>
     </div>
 
-    <button id="btn-nova" class="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-transform active:scale-95 shadow-lg">
-        Nova Charada 🎲
-    </button>
+    <!-- Novos Botões -->
+    <div class="flex gap-4 mt-8">
+        <button id="btn-certo" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-full transition-transform active:scale-95 border border-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+            Certo ✅
+        </button>
+        <button id="btn-errado" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition-transform active:scale-95 border border-rose-400/40 shadow-[0_0_20px_rgba(244,63,94,0.4)]">
+            Errado ❌
+        </button>
+    </div>
+
+    <!-- Placar -->
+    <div class="mt-6 text-white font-mono text-lg bg-black/20 py-2 px-6 rounded-lg backdrop-blur-sm border border-white/10">
+        Acertos: <span id="acertos" class="text-emerald-400">0</span> | 
+        Erros: <span id="erros" class="text-rose-400">0</span>
+    </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
