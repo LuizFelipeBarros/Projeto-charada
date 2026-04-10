@@ -12,6 +12,10 @@ const displayErros = document.getElementById('erros')
 let acertos = 0
 let erros = 0
 
+// Variáveis para rastrear charadas já exibidas
+let charadasExibidas = new Set()
+let tentativasMaximas = 10
+
 // Evento que faz o card girar
 cardInner.addEventListener('click', function girar(){
     cardInner.classList.toggle('[transform:rotateY(180deg)]')
@@ -28,24 +32,49 @@ async function buscandoCharada() {
         
         campoPergunta.textContent = "Buscando..."
 
-        const respostaApi = await fetch(baseUrl + endPoint)
-        
-        // Verifica se a resposta é válida
-        if (!respostaApi.ok) {
-            throw new Error(`Erro HTTP: ${respostaApi.status}`)
+        let tentativa = 0
+        let dados
+        let charadaRepetida = true
+
+        // Tenta buscar uma charada que não tenha sido exibida
+        while (charadaRepetida && tentativa < tentativasMaximas) {
+            const respostaApi = await fetch(baseUrl + endPoint)
+            
+            // Verifica se a resposta é válida
+            if (!respostaApi.ok) {
+                throw new Error(`Erro HTTP: ${respostaApi.status}`)
+            }
+
+            dados = await respostaApi.json()
+
+            // Valida se os dados não estão vazios
+            if (!dados.pergunta || !dados.resposta || dados.pergunta.trim() === '' || dados.resposta.trim() === '') {
+                console.warn("Charada vazia recebida, tentando novamente...")
+                tentativa++
+                continue
+            }
+
+            // Verifica se a charada já foi exibida
+            if (charadasExibidas.has(dados.pergunta)) {
+                console.log("Charada repetida, buscando uma nova...")
+                tentativa++
+                continue
+            }
+
+            charadaRepetida = false
         }
 
-        const dados = await respostaApi.json()
-
-        // Valida se os dados não estão vazios
-        if (!dados.pergunta || !dados.resposta || dados.pergunta.trim() === '' || dados.resposta.trim() === '') {
-            console.warn("Charada vazia recebida, tentando novamente...")
-            setTimeout(buscandoCharada, 500) // Tenta novamente após 500ms
-            return
+        // Se excedeu tentativas, limpa o histórico e mostra a charada mesmo assim
+        if (tentativa >= tentativasMaximas) {
+            console.warn("Limite de tentativas atingido. Limpando histórico.")
+            charadasExibidas.clear()
         }
 
         campoPergunta.textContent = dados.pergunta
         campoResposta.textContent = dados.resposta
+
+        // Adiciona a pergunta ao conjunto de charadas exibidas
+        charadasExibidas.add(dados.pergunta)
 
     } catch (erro) {
         campoPergunta.textContent = "Erro ao conectar com o servidor"
