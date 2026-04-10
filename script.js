@@ -29,7 +29,20 @@ async function buscandoCharada() {
         campoPergunta.textContent = "Buscando..."
 
         const respostaApi = await fetch(baseUrl + endPoint)
+        
+        // Verifica se a resposta é válida
+        if (!respostaApi.ok) {
+            throw new Error(`Erro HTTP: ${respostaApi.status}`)
+        }
+
         const dados = await respostaApi.json()
+
+        // Valida se os dados não estão vazios
+        if (!dados.pergunta || !dados.resposta || dados.pergunta.trim() === '' || dados.resposta.trim() === '') {
+            console.warn("Charada vazia recebida, tentando novamente...")
+            setTimeout(buscandoCharada, 500) // Tenta novamente após 500ms
+            return
+        }
 
         campoPergunta.textContent = dados.pergunta
         campoResposta.textContent = dados.resposta
